@@ -25,8 +25,17 @@ if [ -z "$TARGET" ] || [ -z "$PORT" ]; then
     usage
 fi
 
-# Define the username list and password file
-USERNAMES=("root" "guest" "backup" "ubuntu" "centos")
+# Prompt the user for a known username or use the default list
+read -p "Do you know the username? (yes/no): " KNOWN_USER
+
+if [ "$KNOWN_USER" == "yes" ]; then
+    read -p "Enter the username: " SINGLE_USER
+    USERNAMES=("$SINGLE_USER")
+else
+    USERNAMES=("root" "guest" "backup" "ubuntu" "centos")
+fi
+
+# Define the password file
 PASSWORD_FILE="/usr/share/wordlists/rockyou.txt"
 
 echo "Starting SSH credential testing on ${TARGET}:${PORT}..."
